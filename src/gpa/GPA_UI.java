@@ -22,12 +22,14 @@ public class GPA_UI extends JApplet {
 	private double[] userInputPercentages = new double[12];
 	private double[] userInputGrades = new double[12];
 	// declares arrays to hold input
-	private JTextArea feedback;
+	private JTextArea feedback; 
 	// declares place to provide results
 	private JScrollPane scroller;
 
 	private int numOfPercentEntries = 0;
 	private int numOfGradeEntries = 0;
+	
+	
 	
 	private boolean firstTimeMode = true;
 
