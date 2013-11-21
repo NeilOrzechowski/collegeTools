@@ -10,18 +10,25 @@
   <style>
   #resizable { width: 150px; height: 150px; padding: 0.5em; }
   #resizable h3 { text-align: center; margin: 0; }
+  #resizableUnit2 { width: 150px; height: 150px; padding: 0.5em; }
+  #resizableUnit2 h3 { text-align: center; margin: 0; }
   </style>
   <script>
   $(function() {
     $( "#resizable" ).resizable();
 	$( "#resizable" ).draggable();
+	$( "#resizableUnit2" ).resizable();
+	$( "#resizableUnit2" ).draggable();
   });
   </script>
 </head>
 <body>
  
 <div id="resizable" class="ui-widget-content">
-  <h3 class="ui-widget-header">Resizable & Draggable unit</h3>
+  <h3 class="ui-widget-header">Resizable & Draggable unit #1</h3>
+</div>
+ <div id="resizableUnit2" class="ui-widget-content">
+  <h3 class="ui-widget-header">Resizable & Draggable unit #2</h3>
 </div>
  
  
