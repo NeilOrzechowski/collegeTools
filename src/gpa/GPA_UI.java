@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
@@ -22,22 +23,20 @@ public class GPA_UI extends JApplet {
 	private double[] userInputPercentages = new double[12];
 	private double[] userInputGrades = new double[12];
 	// declares arrays to hold input
-	private JTextArea feedback; 
+	private JTextArea feedback;
 	// declares place to provide results
 	private JScrollPane scroller;
-
+	Container contentPane;
 	private int numOfPercentEntries = 0;
 	private int numOfGradeEntries = 0;
-	
-	
-	
+
 	private boolean firstTimeMode = true;
 
 	// defines counter to keep track of how many fields/percentages entered.
 	public void init() {
 
 		// "getContentPane()" is the region of the screen in which components appear.
-		Container contentPane = getContentPane();
+		 contentPane = getContentPane();
 
 		for (int i = 0; i < percentages.length; i++) {
 			percentages[i] = new JTextField(5);
@@ -45,16 +44,20 @@ public class GPA_UI extends JApplet {
 		}
 		feedback = new JTextArea(10, 50);
 		JButton calcGrade = new JButton("calculateGrade( )");
-		contentPane.add(calcGrade);
+		JButton instructions = new JButton("instructions( )");
+		contentPane.add(instructions);
+		
 		contentPane.setLayout(new FlowLayout());
 		// Some messages for the top of the Applet:
 
-		contentPane.add(new Label("First enter the percentages on the left and the grade you have receieve for every percentage but the one(s) you want to calculate on the right"));
+		//contentPane.add(new Label("First enter the percentages on the left and the grade you have receieve for every percentage but the one(s) you want to calculate on the right"));
 		addLine(Color.blue);
 		contentPane.add(new Label("percentage"));
 		contentPane.add(new Label(" ::: "));
 		contentPane.add(new Label("grade received"));
 
+		addLine(Color.blue);
+		contentPane.add(calcGrade);
 		addLine(Color.blue);
 		for (int i = 0; i < percentages.length; i++) {
 			contentPane.add(percentages[i]);
@@ -74,13 +77,18 @@ public class GPA_UI extends JApplet {
 
 		// Tell the Buttons what they should do when they are clicked:
 		calcGrade.addActionListener(new CalculateListener());
-		firstTimeMode=false;
-		// TODO add a button (and listener) for instructions
+		instructions.addActionListener(new InstructionListener());
+		firstTimeMode = false;
+
 	}
 
-	class SizeListener implements ActionListener {
+	class InstructionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
-			feedback.append("");
+			try {
+				Runtime.getRuntime().exec("notepad instructions.txt");
+			} catch (IOException ex) {
+				feedback.append("Make sure you have notepad installed. \n" + ex.getMessage());
+			}
 		}
 	}
 
@@ -105,20 +113,27 @@ public class GPA_UI extends JApplet {
 							userInputGrades[i] = Double.parseDouble(grades[i].getText());
 						}
 				}
-				feedback.append(calculate(userInputGrades, userInputPercentages, numOfPercentEntries, numOfGradeEntries));
+				String answer = calculate(userInputGrades, userInputPercentages, numOfPercentEntries, numOfGradeEntries);
+				reset();
+				feedback.append(answer);
 			} catch (NumberFormatException e) {
 				feedback.append("error reading number!!\n");
 			}
-			
+
 		}
 
 		public void reset() {
-
+			feedback.setText("");
+			numOfPercentEntries=0;
+			numOfGradeEntries=0;
 			for (int i = 0; i < percentages.length; i++) {
-				userInputPercentages[i]=0;
-				userInputGrades[i]=0;
+				contentPane.add(percentages[i]);
+				percentages[i].setText("?");
+				contentPane.add(grades[i]);
+				grades[i].setText("?");
+				addNewLine();
 			}
-
+	
 		}
 
 		private String calculate(double[] grades, double[] percents, int numPercents, int numGrades) {
@@ -133,7 +148,7 @@ public class GPA_UI extends JApplet {
 				// throw grade exception
 			} else if (totalPercentage < 100) {
 				if (calculateRemainder(70, overallGrade) < 100) {
-					complete = "The minimum grade you need on the remainder of your entries in order to get:\n";
+					complete = "The minimum grade you need on the remainder of your percentage (" + (100-totalPercentage) + ") in order to get:\n";
 					complete += "...a C(>70) is " + calculateRemainder(70, overallGrade) + "%\n";
 					if (calculateRemainder(80, overallGrade) < 100) {
 						complete += "...a B(>80) is " + calculateRemainder(80, overallGrade) + "%\n";

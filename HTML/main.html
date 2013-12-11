@@ -1,0 +1,170 @@
+
+<!doctype html>
+<html>
+<head>
+<title>college tools &raquo; clark university</title>
+<link rel="stylesheet" type="text/css" href="assets/jquery.gridster.css">
+<link rel="stylesheet" type="text/css" href="assets/view.css">
+</head>
+<style>
+body {
+	background-image: url('assets/Clark.jpg');
+}
+</style>
+
+<body>
+	<h1>college tools</h1>
+	<div class="gridster">
+		<ul
+			style="height: $(window ).height() px; width: $(window ).width() px; position: relative">
+
+			<li data-row="1" data-col="1" data-sizex="3" data-sizey="5"
+				data-max-sizex="20" data-max-sizey="10"><br> <small>Moodle
+					<form action="https://moodle.clarku.edu/">
+						<button
+							style="background-image: url(assets/clarkLogo.jpg); width: 208px; height: 243px"></button>
+					</form>
+			</small></li>
+
+			<li data-row="5" data-col="5" data-sizex="2" data-sizey="2"
+				data-max-sizex="20" data-max-sizey="10"><br> <small> Google
+					<form action="http://www.google.com">
+						<button style="background-color: red; width: 100px; height: 100px">Google
+							some stuff for your homework</button>
+					</form>
+			</small></li>
+
+			<li data-row="1" data-col="4" data-sizex="3" data-sizey="3"
+				data-max-sizex="10" data-max-sizey="10"><br> <small>
+					Login
+					<form action="phpFiles.index.php">
+						<button
+							style="background-image: url(assets/login.jpg); width: 250px; height: 150px"></button>
+					</form>
+			</small></li>
+
+
+			<li data-row="3" data-col="2" data-sizex="2" data-sizey="2"
+				data-max-sizex="10" data-max-sizey="10"><br> <small> Save Grid
+					<div class="controls">
+						<button class="serializeSave">save current setup</button>
+					</div>
+			</small></li>
+
+			<li data-row="4" data-col="1" data-sizex="2" data-sizey="2"
+				data-max-sizex="6" data-max-sizey="6"><br> <small>
+					Calculate your grades
+					<form action="gpaCalc.html">
+						<button
+							style="background-color: transparent; width: 150px; height: 50px"></button>
+					</form>
+			</small></li>
+
+			<li data-row="3" data-col="1" data-sizex="3" data-sizey="2"
+				data-max-sizex="4" data-max-sizey="6"><br> <small>
+					schedulizer
+					<form action="resizable.html">
+						<button
+							style="background-color: transparent; width: 170px; height: 60px"></button>
+					</form>
+			</small> </small></li>
+
+
+			<li data-row="4" data-col="2" data-sizex="2" data-sizey="2"
+				data-max-sizex="6" data-max-sizey="6">6<br> <small> Load Grid
+					<div class="controls">
+						<button class="serializeLoad">load saved setup</button>
+					</div>
+			</small></li>
+		</ul>
+	</div>
+	<!-- <textarea id="log"></textarea> -->
+	<script type="text/javascript"
+		src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="assets/jquery.gridster.js" type="text/javascript"
+		charset="utf-8"></script>
+	<script type="text/javascript">
+		var gridster;
+		
+		var sData = [ {
+		"col" : 1,
+		"row" : 1,
+		"size_x" : 3,
+		"size_y" : 5
+		}, {
+		"col" : 5,
+		"row" : 4,
+		"size_x" : 2,
+		"size_y" : 2
+		}, {
+		"col" : 4,
+		"row" : 1,
+		"size_x" : 3,
+		"size_y" : 3
+		}, {
+		"col" : 7,
+		"row" : 1,
+		"size_x" : 2,
+		"size_y" : 2
+		}, {
+		"col" : 7,
+		"row" : 3,
+		"size_x" : 2,
+		"size_y" : 2
+		}, {
+		"col" : 1,
+		"row" : 6,
+		"size_x" : 3,
+		"size_y" : 2
+		}, {
+		"col" : 7,
+		"row" : 5,
+		"size_x" : 2,
+		"size_y" : 2
+		} ];
+		
+		var context = [ '<li <small>Moodle <form action="https://moodle.clarku.edu/"><button	style="background-image: url(assets/clarkLogo.jpg); width: 208px; height: 243px"></button></form></small> </li>',
+		                '<li <small>Google<form action="http://www.google.com"><button style="background-color: red; width: 100px; height: 100px">Google some stuff for your homework</button></form></small> </li>',		       
+		                '<li <small>Login<form action="phpFiles.index.php">	<button	style="background-image: url(assets/login.jpg); width: 250px; height: 150px"></button>	</form>	</small> </li>',		
+		                '<li <small> Save Grid <div class="controls">	<button class="serializeSave">save current setup</button></div></small></small></li>',
+						'<li <small>Calculate your grades<form action="gpaCalc.html"><button style="background-color: transparent; width: 150px; height: 50px"></button>	</form>	</small></li>',
+						'<li <small> schedulizer <form action="resizable.html">		<button style="background-color: transparent; width: 170px; height: 60px"></button>	</form>	</small> </small> </li>',
+						'<li <small> Load Grid <div class="controls">	<button class="serializeLoad">load saved setup</button>	</div></small></li>'];
+		
+		$(function() {
+			gridster = $(".gridster ul").gridster({
+			widget_base_dimensions : [ 100, 55 ],
+			widget_margins : [ 5, 5 ],
+		       helper: 'clone',
+		       resize: {
+		            enabled: true
+		          }
+			}).data('gridster');
+			
+			 $(document).on('click', '.serializeSave', function() {
+				sData = gridster.serialize();
+				 var positions = JSON.stringify(sData);
+				 $.post("phpFiles/processPosition.php",{info:positions}).done(function( data ) {
+					    alert( "Data Loaded: " + data );
+				  });
+			})
+		
+			
+	        $(document).on('click', '.serializeLoad', function() {
+	       	
+	        	$.get( "phpFiles/getPosition.php", function( data ) {
+	        		  $( ".result" ).html( data );
+	        	
+	        		});
+	        	
+	            gridster.remove_all_widgets();
+	            var i = 0;
+	                $.each(sData,  function() {
+	                gridster.add_widget(context[i], this.size_x, this.size_y, this.col, this.row);
+	                i++;
+	            });
+	        });
+		});
+	</script>
+</body>
+</html>
